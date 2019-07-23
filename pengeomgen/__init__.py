@@ -9,6 +9,12 @@ __all__ = ["GeometryDefinition"]
 # PENGEOM GEOMETRY-DEFINITION
 
 class End():
+    def __init__(self, **kwargs):
+        pass
+        
+    def set_void_inner_volume_factor(self, factor):
+        pass
+        
     def __str__(self):
         """
         0000000000000000000000000000000000000000000000000000000000000000
@@ -19,10 +25,13 @@ class End():
         return s
         
 class Include():
-    def __init__(self, filename, starred=False, comment=""):
+    def __init__(self, filename, starred=False, comment="", **kwargs):
         self.comment=comment
         self.filename=filename
         self.starred=starred
+        
+    def set_void_inner_volume_factor(self, factor):
+        pass
         
     def __str__(self):
         """
@@ -65,6 +74,9 @@ class Surface():
         self.xshift=kwargs.get("xshift", None)
         self.yshift=kwargs.get("yshift", None)
         self.zshift=kwargs.get("zshift", None)
+
+    def set_void_inner_volume_factor(self, factor):
+        pass
 
     def __str__(self):
         """
@@ -193,13 +205,17 @@ class Surface():
         return s
 
 class Body():
-    def __init__(self, label, material, surfaces=[], bodies=[], modules=[], comment=""):
+    def __init__(self, label, material, surfaces=[], bodies=[], modules=[], comment="", **kwargs):
         self.comment=comment
         self.label=("    "+label.upper())[-4:]
-        self.material=("    "+str(material).upper())[-4:]
+        self.material=int(material)
         self.surfaces=surfaces
         self.bodies=bodies
         self.modules=modules
+        self.void_inner_volume_factor=kwargs.get("void_inner_volume_factor", 1)
+
+    def set_void_inner_volume_factor(self, factor):
+        self.void_inner_volume_factor=factor
 
     def __str__(self):
         """
@@ -212,7 +228,9 @@ class Body():
         """
         s="0000000000000000000000000000000000000000000000000000000000000000\n"
         s+="BODY    ({0}) {1}\n".format(self.label, self.comment)
-        s+="MATERIAL({0})".format(self.material)
+        # material
+        material=("    "+str(self.void_inner_volume_factor*self.material if self.material<0 else self.material).upper())[-4:]
+        s+="MATERIAL({0})".format(material)
         # surfaces
         for surface in self.surfaces:
             s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(("    "+surface[0].upper())[-4:], str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
@@ -228,7 +246,7 @@ class Module():
     def __init__(self, label, material, surfaces=[], bodies=[], modules=[], rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs):
         self.comment=comment
         self.label=("    "+label.upper())[-4:]
-        self.material=("    "+str(material).upper())[-4:]
+        self.material=int(material)
         self.surfaces=surfaces
         self.bodies=bodies
         self.modules=modules
@@ -241,6 +259,10 @@ class Module():
         self.xshift=kwargs.get("xshift", None)
         self.yshift=kwargs.get("yshift", None)
         self.zshift=kwargs.get("zshift", None)
+        self.void_inner_volume_factor=kwargs.get("void_inner_volume_factor", 1)
+
+    def set_void_inner_volume_factor(self, factor):
+        self.void_inner_volume_factor=factor
 
     def __str__(self):
         """
@@ -260,7 +282,9 @@ class Module():
         """
         s="0000000000000000000000000000000000000000000000000000000000000000\n"
         s+="MODULE  ({0}) {1}\n".format(self.label, self.comment)
-        s+="MATERIAL({0})".format(self.material)
+        # material
+        material=("    "+str(self.void_inner_volume_factor*self.material if self.material<0 else self.material).upper())[-4:]
+        s+="MATERIAL({0})".format(material)
         # surfaces
         for surface in self.surfaces:
             s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(("    "+surface[0].upper())[-4:], str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
@@ -328,6 +352,9 @@ class Clone():
         self.yshift=kwargs.get("yshift", None)
         self.zshift=kwargs.get("zshift", None)
 
+    def set_void_inner_volume_factor(self, factor):
+        pass
+
     def __str__(self):
         """
         0000000000000000000000000000000000000000000000000000000000000000
@@ -394,6 +421,7 @@ class GeometryDefinition():
     def __init__(self, description=""):
         self.definition=[]
         self.description=description
+        self.void_inner_volume_factor=1
  
     # surfaces
     def surface(self, label, indices=(1,1,1,1,1), scale=(1,1,1), rotation=(0,0,0), translation=(0,0,0), 
@@ -470,6 +498,7 @@ class GeometryDefinition():
             if self.description:
                 s="\n"+self.description+"\n"
             for definition in self.definition:
+                definition.set_void_inner_volume_factor(self.void_inner_volume_factor)
                 s+="\n"+str(definition)
             try:
                 if type(self.definition[-1])!=End:
@@ -478,6 +507,12 @@ class GeometryDefinition():
             except IndexError:
                 s="EMPTY GEOMETRY-DEFINITION"
             file_object.write(s)
+        
+    def show_void_inner_volumes(self, status=True):
+        if status:
+            self.void_inner_volume_factor=-1
+        else:
+            self.void_inner_volume_factor=1
         
     def __str__(self):
         s=""
@@ -515,8 +550,10 @@ if __name__=="__main__":
     g.body("B1", 2, surfaces=[("S1",-1), ("S7",-1), ("S8", 1)], comment="cup body")
     g.body("B2", 1, surfaces=[("S8",-1), ("S2",-1)], comment="liquid")
     g.body("B3", 2, surfaces=[("S5", 1), ("S9",-1), ("S7", 1)], comment="trunk")
-    g.body("B4", 0, surfaces=[("S5",-1), ("S6", 1), ("S11",-1)], comment="foot hole")
+    g.body("B4", -10, surfaces=[("S5",-1), ("S6", 1), ("S11",-1)], comment="foot hole")
     g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
+    
+    g.show_void_inner_volumes(True)
     
     print(g)
     g.export_definition("glass")
