@@ -6,6 +6,9 @@ __license__ = "MIT License"
 
 __all__ = ["GeometryDefinition"]
 
+
+import blocks
+
 # PENGEOM GEOMETRY-DEFINITION
 
 class End():
@@ -22,26 +25,6 @@ class End():
         """
         s="0000000000000000000000000000000000000000000000000000000000000000\n"
         s+="END      0000000000000000000000000000000000000000000000000000000"
-        return s
-        
-class Include():
-    def __init__(self, filename, starred=False, comment="", **kwargs):
-        self.comment=comment
-        self.filename=filename
-        self.starred=starred
-        
-    def set_void_inner_volume_factor(self, factor):
-        pass
-        
-    def __str__(self):
-        """
-        0000000000000000000000000000000000000000000000000000000000000000
-        INCLUDE
-           FILE=(filename.ext)
-        """
-        s="0000000000000000000000000000000000000000000000000000000000000000\n"
-        s+="INCLUDE{0} {1}\n".format("*" if self.starred else " ", self.comment)
-        s+="   FILE={0}".format(self.filename)
         return s
 
 class Surface():
@@ -486,7 +469,7 @@ class GeometryDefinition():
     
     # include
     def include(self, filename, starred=False, comment=""):
-        self.definition.append(Include(filename, starred, comment))
+        self.definition.append(blocks.Include(filename, starred, comment))
         
     # end
     def end(self):
@@ -552,6 +535,8 @@ if __name__=="__main__":
     g.body("B3", 2, surfaces=[("S5", 1), ("S9",-1), ("S7", 1)], comment="trunk")
     g.body("B4", -10, surfaces=[("S5",-1), ("S6", 1), ("S11",-1)], comment="foot hole")
     g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
+    
+    g.include("lorem.ipsum", True, "test")
     
     g.show_void_inner_volumes(True)
     
