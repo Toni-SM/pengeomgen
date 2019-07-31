@@ -11,22 +11,6 @@ import blocks
 
 # PENGEOM GEOMETRY-DEFINITION
 
-class End():
-    def __init__(self, **kwargs):
-        pass
-        
-    def set_void_inner_volume_factor(self, factor):
-        pass
-        
-    def __str__(self):
-        """
-        0000000000000000000000000000000000000000000000000000000000000000
-        END      0000000000000000000000000000000000000000000000000000000
-        """
-        s="0000000000000000000000000000000000000000000000000000000000000000\n"
-        s+="END      0000000000000000000000000000000000000000000000000000000"
-        return s
-
 class Surface():
     def __init__(self, label, indices=(1,1,1,1,1), scale=(1,1,1), rotation=(0,0,0), translation=(0,0,0), starred=False, comment="", **kwargs):
         self.comment=comment
@@ -473,7 +457,7 @@ class GeometryDefinition():
         
     # end
     def end(self):
-        self.definition.append(End())
+        self.definition.append(blocks.End())
         
     def export_definition(self, filename):
         with open(file=filename, mode='w') as file_object:
@@ -484,8 +468,8 @@ class GeometryDefinition():
                 definition.set_void_inner_volume_factor(self.void_inner_volume_factor)
                 s+="\n"+str(definition)
             try:
-                if type(self.definition[-1])!=End:
-                    s+="\n"+str(End())
+                if type(self.definition[-1])!=blocks.End:
+                    s+="\n"+str(blocks.End())
                 s+="\n"
             except IndexError:
                 s="EMPTY GEOMETRY-DEFINITION"
@@ -504,8 +488,8 @@ class GeometryDefinition():
         for definition in self.definition:
             s+="\n"+str(definition)
         try:
-            if type(self.definition[-1])!=End:
-                s+="\n"+str(End())
+            if type(self.definition[-1])!=blocks.End:
+                s+="\n"+str(blocks.End())
         except IndexError:
             return ""
         return s
@@ -536,6 +520,7 @@ if __name__=="__main__":
     g.body("B4", -10, surfaces=[("S5",-1), ("S6", 1), ("S11",-1)], comment="foot hole")
     g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
     
+    g.end()
     g.include("lorem.ipsum", True, "test")
     
     g.show_void_inner_volumes(True)

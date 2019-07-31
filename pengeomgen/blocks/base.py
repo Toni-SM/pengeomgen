@@ -8,6 +8,10 @@ class Base(ABC):
     def __str__(self):
         pass
         
+    # TODO: delete
+    def set_void_inner_volume_factor(self, *k):
+        pass
+        
 def Element(Base):
     def __init__(self, label, comment=""):
         Base.__init__(self, comment)

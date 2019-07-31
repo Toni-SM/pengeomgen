@@ -23,7 +23,3 @@ class Include(base.Base):
         s+="INCLUDE{0} {1}\n".format("*" if self.starred else " ", self.comment)
         s+="   FILE={0}".format(self.filename)
         return s
-
-    # TODO: delete
-    def set_void_inner_volume_factor(self, *k):
-        pass
