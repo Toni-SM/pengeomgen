@@ -9,6 +9,7 @@ class Base(ABC):
         pass
         
     # TODO: delete
+    void_inner_volume_factor=1
     def set_void_inner_volume_factor(self, *k):
         pass
         

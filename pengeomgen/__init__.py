@@ -1,7 +1,7 @@
 
 __author__ = "Antonio Serrano"
 __email__ = "toni.sm91@gmail.com"
-__version__ = "0.0.1"
+__version__ = "0.0.2"
 __license__ = "MIT License"
 
 __all__ = ["GeometryDefinition"]
@@ -10,44 +10,6 @@ __all__ = ["GeometryDefinition"]
 import blocks
 
 # PENGEOM GEOMETRY-DEFINITION
-
-class Body():
-    def __init__(self, label, material, surfaces=[], bodies=[], modules=[], comment="", **kwargs):
-        self.comment=comment
-        self.label=("    "+label.upper())[-4:]
-        self.material=int(material)
-        self.surfaces=surfaces
-        self.bodies=bodies
-        self.modules=modules
-        self.void_inner_volume_factor=kwargs.get("void_inner_volume_factor", 1)
-
-    def set_void_inner_volume_factor(self, factor):
-        self.void_inner_volume_factor=factor
-
-    def __str__(self):
-        """
-        0000000000000000000000000000000000000000000000000000000000000000
-        BODY    (    ) text
-        MATERIAL(    )
-        SURFACE (    ), SIDE POINTER=( 1)
-        BODY    (    )
-        MODULE  (    )
-        """
-        s="0000000000000000000000000000000000000000000000000000000000000000\n"
-        s+="BODY    ({0}) {1}\n".format(self.label, self.comment)
-        # material
-        material=("    "+str(self.void_inner_volume_factor*self.material if self.material<0 else self.material).upper())[-4:]
-        s+="MATERIAL({0})".format(material)
-        # surfaces
-        for surface in self.surfaces:
-            s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(("    "+surface[0].upper())[-4:], str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
-        # bodies
-        for body in self.bodies:
-            s+="\nBODY    ({0})".format(("    "+body.upper())[-4:])
-        # modules
-        for module in self.modules:
-            s+="\nMODULE  ({0})".format(("    "+module.upper())[-4:])
-        return s
 
 class Module():
     def __init__(self, label, material, surfaces=[], bodies=[], modules=[], rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs):
@@ -269,7 +231,7 @@ class GeometryDefinition():
 
     # body
     def body(self, label, material, surfaces=[], bodies=[], modules=[], comment=""):
-        self.definition.append(Body(label, material, surfaces, bodies, modules, comment))
+        self.definition.append(blocks.Body(label, material, surfaces, bodies, modules, comment))
 
     # module
     def module(self, label, material, surfaces=[], bodies=[], modules=[], rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs):
