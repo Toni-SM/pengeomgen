@@ -218,7 +218,7 @@ module(label, material, surfaces=[], bodies=[], modules=[],
 
 ### Clone
 
-The method **clone** allows the conation of modules (bodies cannot be cloned; to clone a body that is limited only by surfaces, define it as a module) according to the next formatted text lines:
+The method **clone** allows the clonation of modules (bodies cannot be cloned; to clone a body that is limited only by surfaces, define it as a module) according to the next formatted text lines:
 
 ```
 0000000000000000000000000000000000000000000000000000000000000000
