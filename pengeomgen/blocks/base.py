@@ -18,9 +18,9 @@ class Element(Base):
         Base.__init__(self, comment)
         self.label=("    "+label)[-4:]
         
-        self.scale=kwargs.get("scale", [1,1,1])
-        self.rotation=kwargs.get("rotation", [0,0,0])
-        self.translation=kwargs.get("translation", [0,0,0])
+        self.scale=list(kwargs.get("scale", [1,1,1]))
+        self.rotation=list(kwargs.get("rotation", [0,0,0]))
+        self.translation=list(kwargs.get("translation", [0,0,0]))
         
         # scale (single parameters)
         self.scale[0]=kwargs.get("xscale", self.scale[0])

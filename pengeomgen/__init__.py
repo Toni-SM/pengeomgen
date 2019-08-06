@@ -11,101 +11,6 @@ import blocks
 
 # PENGEOM GEOMETRY-DEFINITION
 
-class Module():
-    def __init__(self, label, material, surfaces=[], bodies=[], modules=[], rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs):
-        self.comment=comment
-        self.label=("    "+label.upper())[-4:]
-        self.material=int(material)
-        self.surfaces=surfaces
-        self.bodies=bodies
-        self.modules=modules
-        self.rotation=rotation
-        self.translation=translation
-        # single parameters
-        self.omega=kwargs.get("omega", None)
-        self.theta=kwargs.get("theta", None)
-        self.phi=kwargs.get("phi", None)
-        self.xshift=kwargs.get("xshift", None)
-        self.yshift=kwargs.get("yshift", None)
-        self.zshift=kwargs.get("zshift", None)
-        self.void_inner_volume_factor=kwargs.get("void_inner_volume_factor", 1)
-
-    def set_void_inner_volume_factor(self, factor):
-        self.void_inner_volume_factor=factor
-
-    def __str__(self):
-        """
-        0000000000000000000000000000000000000000000000000000000000000000
-        MODULE  (    ) text
-        MATERIAL(    )
-        SURFACE (    ), SIDE POINTER=( 1)
-        BODY    (    )
-        MODULE  (    )
-        1111111111111111111111111111111111111111111111111111111111111111
-          OMEGA=(+0.000000000000000E+00,   0) DEG (DEFAULT=0.0)
-          THETA=(+0.000000000000000E+00,   0) DEG (DEFAULT=0.0)
-            PHI=(+0.000000000000000E+00,   0) RAD (DEFAULT=0.0)
-        X-SHIFT=(+0.000000000000000E+00,   0) (DEFAULT=0.0)
-        Y-SHIFT=(+0.000000000000000E+00,   0) (DEFAULT=0.0)
-        Z-SHIFT=(+0.000000000000000E+00,   0) (DEFAULT=0.0)
-        """
-        s="0000000000000000000000000000000000000000000000000000000000000000\n"
-        s+="MODULE  ({0}) {1}\n".format(self.label, self.comment)
-        # material
-        material=("    "+str(self.void_inner_volume_factor*self.material if self.material<0 else self.material).upper())[-4:]
-        s+="MATERIAL({0})".format(material)
-        # surfaces
-        for surface in self.surfaces:
-            s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(("    "+surface[0].upper())[-4:], str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
-        # bodies
-        for body in self.bodies:
-            s+="\nBODY    ({0})".format(("    "+body.upper())[-4:])
-        # modules
-        for module in self.modules:
-            s+="\nMODULE  ({0})".format(("    "+module.upper())[-4:])    
-        # rotation and translation
-        if self.rotation!=(0,0,0) or self.translation!=(0,0,0):   
-            s+="\n1111111111111111111111111111111111111111111111111111111111111111"
-            # rotation
-            # omega
-            if self.omega!=None and self.omega!=0:
-                s+="\n  OMEGA=({0},   0) DEG".format(format(self.omega, "+22.15E"))
-            elif self.rotation[0]:
-                if not self.omega==0:
-                    s+="\n  OMEGA=({0},   0) DEG".format(format(self.rotation[0], "+22.15E"))
-            # theta
-            if self.theta!=None and self.theta!=0:
-                s+="\n  THETA=({0},   0) DEG".format(format(self.theta, "+22.15E"))
-            elif self.rotation[1]:
-                if not self.theta==0:
-                    s+="\n  THETA=({0},   0) DEG".format(format(self.rotation[1], "+22.15E"))   
-            # phi
-            if self.phi!=None and self.phi!=0:
-                s+="\n    PHI=({0},   0) DEG".format(format(self.phi, "+22.15E"))
-            elif self.rotation[2]:
-                if not self.phi==0:
-                    s+="\n    PHI=({0},   0) DEG".format(format(self.rotation[2], "+22.15E"))
-            # translation
-            # shift x
-            if self.xshift!=None and self.xshift!=0:
-                s+="\nX-SHIFT=({0},   0)".format(format(self.xshift, "+22.15E"))
-            elif self.translation[0]:
-                if not self.xshift==0:
-                    s+="\nX-SHIFT=({0},   0)".format(format(self.translation[0], "+22.15E"))
-            # shift y
-            if self.yshift!=None and self.yshift!=0:
-                s+="\nY-SHIFT=({0},   0)".format(format(self.yshift, "+22.15E"))
-            elif self.translation[1]:
-                if not self.yshift==0:
-                    s+="\nY-SHIFT=({0},   0)".format(format(self.translation[1], "+22.15E"))
-            # shift z
-            if self.zshift!=None and self.zshift!=0:
-                s+="\nZ-SHIFT=({0},   0)".format(format(self.zshift, "+22.15E"))
-            elif self.translation[2]:
-                if not self.zshift==0:
-                    s+="\nZ-SHIFT=({0},   0)".format(format(self.translation[2], "+22.15E"))  
-        return s
-
 class Clone():
     def __init__(self, label, module, rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs):
         self.comment=comment
@@ -230,12 +135,12 @@ class GeometryDefinition():
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
 
     # body
-    def body(self, label, material, surfaces=[], bodies=[], modules=[], comment=""):
-        self.definition.append(blocks.Body(label, material, surfaces, bodies, modules, comment))
+    def body(self, label, material, surfaces=[], bodies=[], modules=[], comment="", **kwargs):
+        self.definition.append(blocks.Body(label, material, surfaces, bodies, modules, comment, **kwargs))
 
     # module
-    def module(self, label, material, surfaces=[], bodies=[], modules=[], rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs):
-        self.definition.append(Module(label, material, surfaces, bodies, modules, rotation, translation, comment, **kwargs))
+    def module(self, label, material, surfaces=[], bodies=[], modules=[], comment="", **kwargs):
+        self.definition.append(blocks.Module(label, material, surfaces, bodies, modules, comment, **kwargs))
         
     # clone
     def clone(self, label, module, rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs):
@@ -309,9 +214,13 @@ if __name__=="__main__":
     g.body("B3", 2, surfaces=[("S5", 1), ("S9",-1), ("S7", 1)], comment="trunk")
     g.body("B4", -10, surfaces=[("S5",-1), ("S6", 1), ("S11",-1)], comment="foot hole")
     g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
+    g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
     
     g.end()
     g.include("lorem.ipsum", True, "test")
+    
+    g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body", translation=(0, 0, -6))
+    g.module("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body", xshift=10)
     
     g.show_void_inner_volumes(True)
     

@@ -93,7 +93,7 @@ class Surface(base.Element):
             if self.A0:
                 s+="\n     A0=({0},   0)".format(format(self.A0, "+22.15E"))
             # rotation and translation
-            if self.rotation!=(0,0,0) or self.translation!=(0,0,0):
+            if self.rotation!=[0,0,0] or self.translation!=[0,0,0]:
                 s+="\n1111111111111111111111111111111111111111111111111111111111111111"
         # rotation
         s+=self.representation_rotation()
