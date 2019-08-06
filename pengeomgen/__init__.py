@@ -116,35 +116,27 @@ if __name__=="__main__":
     
     g=GeometryDefinition("The pythonic champagne glass")
     
-    g.surface_plane("S1", zscale=9)
-    g.surface_plane("S2", zscale=7)
-    g.surface("S4", indices=( 0, 0, 0, 1, 0), zshift=-6)
-    g.surface("S5", indices=( 0, 0, 0, 1, 0), zshift=-6.4)
-    g.surface("S6", indices=( 0, 0, 0, 1, 0), zshift=-6.8)
-
-    g.surface_paraboloid("S7")
-    g.surface_paraboloid("S8", scale=(0.98, 0.98, 1), translation=(0, 0, 0.35))
-
-    g.surface_cone("S9", scale=(0.012, 0.012, 1), translation=(0, 0, -20))
-    g.surface_cone("S10", scale=(3.7, 3.7, 1), translation=(0, 0, -6))
-    g.surface_cone("S11", scale=(5.1, 5.1, 1), translation=(0, 0, -6.35))
-
-    g.body("B1", 2, surfaces=[("S1",-1), ("S7",-1), ("S8", 1)], comment="cup body")
-    g.body("B2", 1, surfaces=[("S8",-1), ("S2",-1)], comment="liquid")
-    g.body("B3", 2, surfaces=[("S5", 1), ("S9",-1), ("S7", 1)], comment="trunk")
-    g.body("B4", -10, surfaces=[("S5",-1), ("S6", 1), ("S11",-1)], comment="foot hole")
-    g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
-    g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
+    
+    
+    g.surface("S1", starred=True)
+    g.surface("S2", indices=(1,0,1,0,1), scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1))
+    g.surface("S3", indices=(1,0,1,0,1), xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad")
+    
+    g.body("B1", 1, comment="body number 1")
+    g.body("B2", 2, surfaces=[("S1", 1), ("S2", -1)], bodies=["B1"], modules=["M1"], comment="body number 2")
+    
+    g.module("M1", 3, surfaces=[("S1", 1), ("S2", -1), ("S3", 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
+    g.module("M2", 4, surfaces=[("S1", 1), ("S2", -1), ("S3", 1)], bodies=["B2"], modules=["M2"], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
+    g.module("M3", 5, comment="module number 3")
+    
+    g.clone("C1", "M3", comment="clone number 1")
+    g.clone("C2", "M3", scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), comment="clone number 2")
+    g.clone("C1", "M3", xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad", comment="clone number 3")
+    
+    g.include("filename1.test", comment="non starred file")
+    g.include("filename2.test", starred=True, comment="starred file")
     
     g.end()
-    g.include("lorem.ipsum", True, "test")
-    
-    g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body", translation=(0, 0, -6))
-    g.module("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body", xshift=10)
-    
-    g.clone("A", "B", phi=20)
-    
-    g.show_void_inner_volumes(True)
     
     print(g)
     g.export_definition("test")

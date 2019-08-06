@@ -36,6 +36,11 @@ class Element(Base):
         self.translation[0]=kwargs.get("xshift", self.translation[0])
         self.translation[1]=kwargs.get("yshift", self.translation[1])
         self.translation[2]=kwargs.get("zshift", self.translation[2])
+        
+        # angle unit
+        self.angle=kwargs.get("angle", "DEG").upper()[:3]
+        if self.angle!="RAD":
+            self.angle="DEG"
 
     @abstractmethod
     def __str__(self):
@@ -58,13 +63,13 @@ class Element(Base):
         s=""
         # omega
         if self.rotation[0]:
-            s+="\n  OMEGA=({0},   0) DEG".format(format(self.rotation[0], "+22.15E"))
+            s+="\n  OMEGA=({0},   0) {1}".format(format(self.rotation[0], "+22.15E"), self.angle)
         # theta
         if self.rotation[1]:
-            s+="\n  THETA=({0},   0) DEG".format(format(self.rotation[1], "+22.15E"))   
+            s+="\n  THETA=({0},   0) {1}".format(format(self.rotation[1], "+22.15E"), self.angle)   
         # phi
         if self.rotation[2]:
-            s+="\n    PHI=({0},   0) DEG".format(format(self.rotation[2], "+22.15E"))
+            s+="\n    PHI=({0},   0) {1}".format(format(self.rotation[2], "+22.15E"), self.angle)
         return s
 
     def representation_translation(self):
