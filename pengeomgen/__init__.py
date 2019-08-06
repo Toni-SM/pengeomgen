@@ -147,5 +147,5 @@ if __name__=="__main__":
     g.show_void_inner_volumes(True)
     
     print(g)
-    g.export_definition("glass")
+    g.export_definition("test")
     
