@@ -12,7 +12,7 @@ import blocks
 # GEOMETRY-DEFINITION MANAGER
 
 class GeometryDefinition():
-    def __init__(self, description="", unit="inch"):
+    def __init__(self, description="", unit="cm"):
         self.definition=[]
         self.description=description
         self.unit=unit
