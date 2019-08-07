@@ -107,8 +107,8 @@ class GeometryDefinition():
                 s="EMPTY GEOMETRY-DEFINITION"
             file_object.write(s)
         
-    def show_void_inner_volumes(self, status=True):
-        if status:
+    def show_void_inner_volumes(self, show=True):
+        if show:
             self.void_inner_volume_factor=-1
         else:
             self.void_inner_volume_factor=1
@@ -118,6 +118,7 @@ class GeometryDefinition():
         if self.description:
             s="\n"+self.description+"\n"
         for definition in self.definition:
+            definition.set_void_inner_volume_factor(self.void_inner_volume_factor)
             s+="\n"+str(definition)
         try:
             if type(self.definition[-1])!=blocks.End:
@@ -137,8 +138,8 @@ if __name__=="__main__":
     s2=g.surface("S2", indices=(1,0,1,0,1), scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1))
     s3=g.surface("S3", indices=(1,0,1,0,1), xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad")
     
-    b1=g.body("B1", 1, comment="body number 1")
-    b2=g.body("B2", 2, surfaces=[(s1, 1), ("S2", -1)], bodies=[b1], comment="body number 2")
+    b1=g.body("B1", -100, comment="body number 1")
+    b2=g.body("B2", -200, surfaces=[(s1, 1), ("S2", -1)], bodies=[b1], comment="body number 2")
     
     m1=g.module("M1", 3, surfaces=[("S1", 1), ("S2", -1), ("S3", 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
     m2=g.module("M2", 4, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=[b2], modules=[m1], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
@@ -152,6 +153,8 @@ if __name__=="__main__":
     f2=g.include("filename2.test", starred=True, comment="starred file")
     
     e=g.end()
+    
+    g.show_void_inner_volumes(False)
     
     print(g)
     g.export_definition("test")

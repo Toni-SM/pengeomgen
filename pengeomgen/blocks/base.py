@@ -1,18 +1,19 @@
 from abc import ABC, abstractmethod
 
+
 class Base(ABC):
     def __init__(self, comment=""):
         self.comment=comment
+        self.void_inner_volume_factor=1
         
     @abstractmethod
     def __str__(self):
         pass
-        
-    # TODO: delete
-    void_inner_volume_factor=1
-    def set_void_inner_volume_factor(self, *k):
-        pass
-        
+    
+    def set_void_inner_volume_factor(self, factor):
+        self.void_inner_volume_factor=factor
+      
+      
 class Element(Base):
     def __init__(self, label, comment="", **kwargs):
         super().__init__(comment)
@@ -84,6 +85,7 @@ class Element(Base):
         if self.translation[2]:
             s+="\nZ-SHIFT=({0},   0)".format(format(self.translation[2], "+22.15E"))
         return s
+
 
 class AdvancedElement(Element):
     def __init__(self, label, material, comment="", **kwargs):
