@@ -17,83 +17,115 @@ class GeometryDefinition():
         self.description=description
         self.unit=unit
         self.void_inner_volume_factor=1
+        
+        self._sm_characters=[120, 97, 97, 96]
  
     # surfaces
-    def surface(self, label, indices=(1,1,1,1,1), starred=False, comment="", **kwargs):
+    def surface(self, label=None, indices=(1,1,1,1,1), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
         
-    def surface_implicit_form(self, label, indices=(0,0,0,0,0), starred=False, comment="", **kwargs):
+    def surface_implicit_form(self, label=None, indices=(0,0,0,0,0), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
-    def surface_plane(self, label, indices=(0,0,0,1,-1), starred=False, comment="", **kwargs):
+    def surface_plane(self, label=None, indices=(0,0,0,1,-1), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
-    def surface_sphere(self, label, indices=(1,1,1,0,-1), starred=False, comment="", **kwargs):
+    def surface_sphere(self, label=None, indices=(1,1,1,0,-1), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
-    def surface_cylinder(self, label, indices=(1,1,0,0,-1), starred=False, comment="", **kwargs):
+    def surface_cylinder(self, label=None, indices=(1,1,0,0,-1), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
-    def surface_hyperbolic_cylinder(self, label, indices=(1,-1,0,0,-1), starred=False, comment="", **kwargs):
+    def surface_hyperbolic_cylinder(self, label=None, indices=(1,-1,0,0,-1), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
-    def surface_cone(self, label, indices=(1,1,-1,0,0), starred=False, comment="", **kwargs):
+    def surface_cone(self, label=None, indices=(1,1,-1,0,0), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
-    def surface_one_sheet_hyperboloid(self, label, indices=(1,1,-1,0,-1), starred=False, comment="", **kwargs):
+    def surface_one_sheet_hyperboloid(self, label=None, indices=(1,1,-1,0,-1), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
-    def surface_two_sheet_hyperboloid(self, label, indices=(1,1,-1,0,1), starred=False, comment="", **kwargs):
+    def surface_two_sheet_hyperboloid(self, label=None, indices=(1,1,-1,0,1), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
-    def surface_paraboloid(self, label, indices=(1,1,0,-1,0), starred=False, comment="", **kwargs):
+    def surface_paraboloid(self, label=None, indices=(1,1,0,-1,0), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
-    def surface_parabolic_cylinder(self, label, indices=(1,0,0,-1,0), starred=False, comment="", **kwargs):
+    def surface_parabolic_cylinder(self, label=None, indices=(1,0,0,-1,0), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
-    def surface_hyperbolic_paraboloid(self, label, indices=(1,-1,0,-1,0), starred=False, comment="", **kwargs):  
+    def surface_hyperbolic_paraboloid(self, label=None, indices=(1,-1,0,-1,0), starred=False, comment="", **kwargs):  
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     # body
-    def body(self, label, material, comment="", **kwargs):
+    def body(self, label=None, material=0, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Body(label, material, comment, **kwargs))
         return self.definition[-1]
 
     # module
-    def module(self, label, material, comment="", **kwargs):
+    def module(self, label=None, material=0, comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Module(label, material, comment, **kwargs))
         return self.definition[-1]
         
     # clone
-    def clone(self, label, module, comment="", **kwargs):
+    def clone(self, label=None, module="", comment="", **kwargs):
         kwargs["unit"]=self.unit
+        if label is None:
+            label=self._sm_label()
         self.definition.append(blocks.Clone(label, module, comment, **kwargs))
         return self.definition[-1]
     
@@ -129,6 +161,22 @@ class GeometryDefinition():
         else:
             self.void_inner_volume_factor=1
         
+    def _sm_label(self):
+        # 52728 labels from 'XAAA' to 'ZZZZ'
+        self._sm_characters[3]+=1
+        if self._sm_characters[3]>122:
+            self._sm_characters[3]=97
+            self._sm_characters[2]+=1
+            if self._sm_characters[2]>122:
+                self._sm_characters[2]=97
+                self._sm_characters[1]+=1
+                if self._sm_characters[1]>122:
+                    self._sm_characters[1]=97
+                    self._sm_characters[0]+=1
+                    if self._sm_characters[0]>122:
+                        self._sm_characters[0]=120
+        return "".join([chr(c).upper() for c in self._sm_characters])
+        
     def __str__(self):
         s=""
         if self.description:
@@ -148,18 +196,18 @@ class GeometryDefinition():
 
 if __name__=="__main__":
     
-    g=GeometryDefinition("The pythonic champagne glass")
+    g=GeometryDefinition("The pythonic champagne glass", unit="inch")
     
-    s1=g.surface("S1", starred=True)
-    s2=g.surface("S2", indices=(1,0,1,0,1), scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1))
-    s3=g.surface("S3", indices=(1,0,1,0,1), xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad")
+    s1=g.surface(starred=True)
+    s2=g.surface(indices=(1,0,1,0,1), scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1))
+    s3=g.surface(indices=(1,0,1,0,1), xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad")
     
-    b1=g.body("B1", -100, comment="body number 1")
-    b2=g.body("B2", -200, surfaces=[(s1, 1), ("S2", -1)], bodies=[b1], comment="body number 2")
+    b1=g.body("B1", material=-100, comment="body number 1")
+    b2=g.body("B2", material=-200, surfaces=[(s1, 1), (s2, -1)], bodies=[b1], comment="body number 2")
     
-    m1=g.module("M1", 3, surfaces=[("S1", 1), ("S2", -1), ("S3", 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
-    m2=g.module("M2", 4, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=[b2], modules=[m1], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
-    m3=g.module("M3", 5, comment="module number 3")
+    m1=g.module("M1", material=3, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
+    m2=g.module("M2", material=4, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=[b2], modules=[m1], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
+    m3=g.module("M3", material=5, comment="module number 3")
     
     c1=g.clone("C1", m1, comment="clone number 1")
     c2=g.clone("C2", m2, scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), comment="clone number 2")
