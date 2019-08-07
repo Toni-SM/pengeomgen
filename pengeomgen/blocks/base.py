@@ -19,6 +19,11 @@ class Element(Base):
         super().__init__(comment)
         self.label=("    "+label)[-4:]
         
+        # length unit
+        self.unit_multiplication_factor=1
+        self.unit=kwargs.get("unit", "cm").lower()
+        self.compute_unit_multiplication_factor()
+        
         self.scale=list(kwargs.get("scale", [1,1,1]))
         self.rotation=list(kwargs.get("rotation", [0,0,0]))
         self.translation=list(kwargs.get("translation", [0,0,0]))
@@ -46,6 +51,21 @@ class Element(Base):
     @abstractmethod
     def __str__(self):
         pass
+
+    def compute_unit_multiplication_factor(self):
+        if self.unit.lower() in ["mm", "millimeter", "millimeters"]:
+            self.unit_multiplication_factor=0.1
+        elif self.unit.lower() in ["cm", "centimeter", "centimeters"]:
+            self.unit_multiplication_factor=1
+        elif self.unit.lower() in ["dm", "decimeter", "decimeters"]:
+            self.unit_multiplication_factor=10
+        elif self.unit.lower() in ["m", "meter", "meters"]:
+            self.unit_multiplication_factor=100
+        elif self.unit.lower() in ["in", "inch", "inches"]:
+            self.unit_multiplication_factor=2.54
+        elif self.unit.lower() in ["ft", "foot", "feet"]:
+            self.unit_multiplication_factor=30.479
+        
         
     def representation_scale(self):
         s=""
@@ -77,13 +97,13 @@ class Element(Base):
         s=""
         # shift x
         if self.translation[0]:
-            s+="\nX-SHIFT=({0},   0)".format(format(self.translation[0], "+22.15E"))
+            s+="\nX-SHIFT=({0},   0)".format(format(self.translation[0]*self.unit_multiplication_factor, "+22.15E"))
         # shift y
         if self.translation[1]:
-            s+="\nY-SHIFT=({0},   0)".format(format(self.translation[1], "+22.15E"))
+            s+="\nY-SHIFT=({0},   0)".format(format(self.translation[1]*self.unit_multiplication_factor, "+22.15E"))
         # shift z
         if self.translation[2]:
-            s+="\nZ-SHIFT=({0},   0)".format(format(self.translation[2], "+22.15E"))
+            s+="\nZ-SHIFT=({0},   0)".format(format(self.translation[2]*self.unit_multiplication_factor, "+22.15E"))
         return s
 
 

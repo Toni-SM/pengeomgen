@@ -12,72 +12,88 @@ import blocks
 # GEOMETRY-DEFINITION MANAGER
 
 class GeometryDefinition():
-    def __init__(self, description=""):
+    def __init__(self, description="", unit="inch"):
         self.definition=[]
         self.description=description
+        self.unit=unit
         self.void_inner_volume_factor=1
  
     # surfaces
     def surface(self, label, indices=(1,1,1,1,1), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
         
     def surface_implicit_form(self, label, indices=(0,0,0,0,0), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_plane(self, label, indices=(0,0,0,1,-1), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_sphere(self, label, indices=(1,1,1,0,-1), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_cylinder(self, label, indices=(1,1,0,0,-1), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_hyperbolic_cylinder(self, label, indices=(1,-1,0,0,-1), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_cone(self, label, indices=(1,1,-1,0,0), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_one_sheet_hyperboloid(self, label, indices=(1,1,-1,0,-1), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_two_sheet_hyperboloid(self, label, indices=(1,1,-1,0,1), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_paraboloid(self, label, indices=(1,1,0,-1,0), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_parabolic_cylinder(self, label, indices=(1,0,0,-1,0), starred=False, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_hyperbolic_paraboloid(self, label, indices=(1,-1,0,-1,0), starred=False, comment="", **kwargs):  
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     # body
     def body(self, label, material, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Body(label, material, comment, **kwargs))
         return self.definition[-1]
 
     # module
     def module(self, label, material, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Module(label, material, comment, **kwargs))
         return self.definition[-1]
         
     # clone
     def clone(self, label, module, comment="", **kwargs):
+        kwargs["unit"]=self.unit
         self.definition.append(blocks.Clone(label, module, comment, **kwargs))
         return self.definition[-1]
     
