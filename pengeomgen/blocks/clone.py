@@ -18,7 +18,10 @@ class Clone(base.Element):
 
     def __init__(self, label, module, comment="", **kwargs):
         super().__init__(label, comment, **kwargs)
-        self.module=("    "+module)[-4:]
+        if issubclass(type(module), base.Base):
+            self.module=module.label
+        else:
+            self.module=("    "+module)[-4:]
         
     def __str__(self):
         s="0000000000000000000000000000000000000000000000000000000000000000\n"

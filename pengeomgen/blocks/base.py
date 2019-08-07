@@ -100,12 +100,21 @@ class AdvancedElement(Element):
     def representation_elements(self):
         s=""
         for surface in self.surfaces:
-            s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(("    "+surface[0])[-4:], str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
+            if issubclass(type(surface[0]), Base):
+                s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(surface[0].label, str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
+            else:
+                s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(("    "+surface[0])[-4:], str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
         # bodies
         for body in self.bodies:
-            s+="\nBODY    ({0})".format(("    "+body)[-4:])
+            if issubclass(type(body), Base):
+                s+="\nBODY    ({0})".format(body.label)
+            else:
+                s+="\nBODY    ({0})".format(("    "+body)[-4:])
         # modules
         for module in self.modules:
-            s+="\nMODULE  ({0})".format(("    "+module)[-4:])
+            if issubclass(type(module), Base):
+                s+="\nMODULE  ({0})".format(module.label)
+            else:
+                s+="\nMODULE  ({0})".format(("    "+module)[-4:])
         return s       
         

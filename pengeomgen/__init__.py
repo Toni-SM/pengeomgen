@@ -138,14 +138,14 @@ if __name__=="__main__":
     s3=g.surface("S3", indices=(1,0,1,0,1), xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad")
     
     b1=g.body("B1", 1, comment="body number 1")
-    b2=g.body("B2", 2, surfaces=[("S1", 1), ("S2", -1)], bodies=["B1"], modules=["M1"], comment="body number 2")
+    b2=g.body("B2", 2, surfaces=[(s1, 1), ("S2", -1)], bodies=[b1], comment="body number 2")
     
     m1=g.module("M1", 3, surfaces=[("S1", 1), ("S2", -1), ("S3", 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
-    m2=g.module("M2", 4, surfaces=[("S1", 1), ("S2", -1), ("S3", 1)], bodies=["B2"], modules=["M2"], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
+    m2=g.module("M2", 4, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=[b2], modules=[m1], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
     m3=g.module("M3", 5, comment="module number 3")
     
-    c1=g.clone("C1", "M1", comment="clone number 1")
-    c2=g.clone("C2", "M2", scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), comment="clone number 2")
+    c1=g.clone("C1", m1, comment="clone number 1")
+    c2=g.clone("C2", m2, scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), comment="clone number 2")
     c3=g.clone("C1", "M3", xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad", comment="clone number 3")
     
     f1=g.include("filename1.test", comment="non starred file")
