@@ -55,12 +55,12 @@ class GeometryDefinition():
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
 
     # body
-    def body(self, label, material, surfaces=[], bodies=[], modules=[], comment="", **kwargs):
-        self.definition.append(blocks.Body(label, material, surfaces, bodies, modules, comment, **kwargs))
+    def body(self, label, material, comment="", **kwargs):
+        self.definition.append(blocks.Body(label, material, comment, **kwargs))
 
     # module
-    def module(self, label, material, surfaces=[], bodies=[], modules=[], comment="", **kwargs):
-        self.definition.append(blocks.Module(label, material, surfaces, bodies, modules, comment, **kwargs))
+    def module(self, label, material, comment="", **kwargs):
+        self.definition.append(blocks.Module(label, material, comment, **kwargs))
         
     # clone
     def clone(self, label, module, comment="", **kwargs):

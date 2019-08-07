@@ -15,7 +15,7 @@ class Base(ABC):
         
 class Element(Base):
     def __init__(self, label, comment="", **kwargs):
-        Base.__init__(self, comment)
+        super().__init__(comment)
         self.label=("    "+label)[-4:]
         
         self.scale=list(kwargs.get("scale", [1,1,1]))
@@ -84,3 +84,28 @@ class Element(Base):
         if self.translation[2]:
             s+="\nZ-SHIFT=({0},   0)".format(format(self.translation[2], "+22.15E"))
         return s
+
+class AdvancedElement(Element):
+    def __init__(self, label, material, comment="", **kwargs):
+        super().__init__(label, comment, **kwargs)
+        self.material=int(material)
+        self.surfaces=kwargs.get("surfaces", [])
+        self.bodies=kwargs.get("bodies", [])
+        self.modules=kwargs.get("modules", [])
+        
+    @abstractmethod
+    def __str__(self):
+        pass
+        
+    def representation_elements(self):
+        s=""
+        for surface in self.surfaces:
+            s+="\nSURFACE ({0}), SIDE POINTER=({1})".format(("    "+surface[0])[-4:], str(surface[1]) if surface[1]<0 else " "+str(surface[1]))
+        # bodies
+        for body in self.bodies:
+            s+="\nBODY    ({0})".format(("    "+body)[-4:])
+        # modules
+        for module in self.modules:
+            s+="\nMODULE  ({0})".format(("    "+module)[-4:])
+        return s       
+        
