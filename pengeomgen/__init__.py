@@ -6,8 +6,11 @@ __license__ = "MIT License"
 
 __all__ = ["GeometryDefinition"]
 
-
-import blocks
+import os
+try:
+    from . import blocks
+except:
+    import blocks
 
 # GEOMETRY-DEFINITION MANAGER
 
@@ -35,7 +38,7 @@ class GeometryDefinition():
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
-    def surface_plane(self, label=None, indices=(0,0,0,1,-1), starred=False, comment="", **kwargs):
+    def surface_plane(self, label=None, indices=(0,0,0,1,0), starred=False, comment="", **kwargs):
         kwargs["unit"]=self.unit
         if label is None:
             label=self._sm_label()
@@ -160,7 +163,7 @@ class GeometryDefinition():
             self.void_inner_volume_factor=-1
         else:
             self.void_inner_volume_factor=1
-        
+
     def _sm_label(self):
         # 52728 labels from 'XAAA' to 'ZZZZ'
         self._sm_characters[3]+=1
@@ -205,7 +208,7 @@ if __name__=="__main__":
     b1=g.body("B1", material=-100, comment="body number 1")
     b2=g.body("B2", material=-200, surfaces=[(s1, 1), (s2, -1)], bodies=[b1], comment="body number 2")
     
-    m1=g.module("M1", material=3, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
+    m1=g.module(material=3, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
     m2=g.module("M2", material=4, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=[b2], modules=[m1], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
     m3=g.module("M3", material=5, comment="module number 3")
     
