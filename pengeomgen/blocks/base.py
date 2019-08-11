@@ -64,8 +64,7 @@ class Element(Base):
         elif self.unit.lower() in ["in", "inch", "inches"]:
             self.unit_multiplication_factor=2.54
         elif self.unit.lower() in ["ft", "foot", "feet"]:
-            self.unit_multiplication_factor=30.479
-        
+            self.unit_multiplication_factor=30.479 
         
     def representation_scale(self):
         s=""

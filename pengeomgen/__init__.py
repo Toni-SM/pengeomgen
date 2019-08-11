@@ -15,94 +15,107 @@ except:
 # GEOMETRY-DEFINITION MANAGER
 
 class GeometryDefinition():
-    def __init__(self, description="", unit="cm"):
+    def __init__(self, description="", unit="cm", angle="DEG"):
         self.definition=[]
         self.description=description
         self.unit=unit
+        self.angle=angle
         self.void_inner_volume_factor=1
         
         self._sm_characters=[120, 97, 97, 96]
  
     # surfaces
     def surface(self, label=None, indices=(1,1,1,1,1), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
         
     def surface_implicit_form(self, label=None, indices=(0,0,0,0,0), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_plane(self, label=None, indices=(0,0,0,1,0), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_sphere(self, label=None, indices=(1,1,1,0,-1), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_cylinder(self, label=None, indices=(1,1,0,0,-1), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_hyperbolic_cylinder(self, label=None, indices=(1,-1,0,0,-1), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_cone(self, label=None, indices=(1,1,-1,0,0), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_one_sheet_hyperboloid(self, label=None, indices=(1,1,-1,0,-1), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_two_sheet_hyperboloid(self, label=None, indices=(1,1,-1,0,1), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
 
     def surface_paraboloid(self, label=None, indices=(1,1,0,-1,0), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_parabolic_cylinder(self, label=None, indices=(1,0,0,-1,0), starred=False, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
         return self.definition[-1]
             
     def surface_hyperbolic_paraboloid(self, label=None, indices=(1,-1,0,-1,0), starred=False, comment="", **kwargs):  
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Surface(label, indices, starred, comment, **kwargs))
@@ -110,7 +123,8 @@ class GeometryDefinition():
 
     # body
     def body(self, label=None, material=0, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Body(label, material, comment, **kwargs))
@@ -118,7 +132,8 @@ class GeometryDefinition():
 
     # module
     def module(self, label=None, material=0, comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Module(label, material, comment, **kwargs))
@@ -126,7 +141,8 @@ class GeometryDefinition():
         
     # clone
     def clone(self, label=None, module="", comment="", **kwargs):
-        kwargs["unit"]=self.unit
+        kwargs["unit"]=kwargs.get("unit", self.unit)
+        kwargs["angle"]=kwargs.get("angle", self.angle)
         if label is None:
             label=self._sm_label()
         self.definition.append(blocks.Clone(label, module, comment, **kwargs))
@@ -199,22 +215,22 @@ class GeometryDefinition():
 
 if __name__=="__main__":
     
-    g=GeometryDefinition("The pythonic champagne glass", unit="inch")
+    g=GeometryDefinition("The pythonic champagne glass", unit="inch", angle="rad")
     
     s1=g.surface(starred=True)
     s2=g.surface(indices=(1,0,1,0,1), scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1))
-    s3=g.surface(indices=(1,0,1,0,1), xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad")
+    s3=g.surface(indices=(1,0,1,0,1), xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="deg")
     
     b1=g.body("B1", material=-100, comment="body number 1")
     b2=g.body("B2", material=-200, surfaces=[(s1, 1), (s2, -1)], bodies=[b1], comment="body number 2")
     
-    m1=g.module(material=3, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="rad", comment="module number 1")
+    m1=g.module(material=3, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=["B2"], modules=["M2"], scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), angle="deg", comment="module number 1")
     m2=g.module("M2", material=4, surfaces=[(s1, 1), (s2, -1), (s3, 1)], bodies=[b2], modules=[m1], xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, comment="module number 2")
     m3=g.module("M3", material=5, comment="module number 3")
     
     c1=g.clone("C1", m1, comment="clone number 1")
     c2=g.clone("C2", m2, scale=(2,3,4), rotation=(5,6,7), translation=(8,9,1), comment="clone number 2")
-    c3=g.clone("C1", "M3", xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, angle="rad", comment="clone number 3")
+    c3=g.clone("C3", "M3", xscale=20, yscale=30, zscale=40, omega=50, theta=60, phi=70, xshift=80, yshift=90, zshift=100, unit="cm", angle="rad", comment="clone number 3")
     
     f1=g.include("filename1.test", comment="non starred file")
     f2=g.include("filename2.test", starred=True, comment="starred file")
