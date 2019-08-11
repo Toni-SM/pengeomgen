@@ -59,10 +59,13 @@ The main name provided by the pengeomgen package is **GeometryDefinition**. This
 ```python
 import pengeomgen
 
-g = pengeomgen.GeometryDefinition(description="", unit="cm")
+g = pengeomgen.GeometryDefinition(description="", unit="cm", angle="DEG")
 ```
 * description (string): informative text
-* unit (string): unit of measurement for length (translation). This parameter allows us to define the material system in the units of the schematics, as example. The current unit (see the table above) is converted to centimeter when the geometry definition file is exported.
+* unit (string): unit of measurement for length (translation). This parameter allows us to define the material system in the units of the schematics, as example. The current unit (see the table below) is converted to centimeter when the geometry definition file is exported
+* angle (string): unit of measure for angles (rotation). This parameter can be "rad", "RAD" (radian) or "deg", "DEG" (degree)
+
+> The unit and angle parameters can be overwrite in the methods described below for construct quadric surfaces, modules and clones
  
 Argument (string)           | Unit of measurement 
 --------------------------- | --------------------- 
@@ -73,13 +76,23 @@ m, meter, meters            | meter
 in, inch, inches            | inch
 ft, foot, feet              | foot
 
-#### Export geometry definition to a file
+#### - Export geometry definition to a file
 
 For export the constructed geometry definition to a file, we can call the **export_definition** method. This method has as only parameter the absolute or relative path of the output file. 
 
 ```python
 g.export_definition("output_file_path")
 ```
+
+#### - Show void inner volumes
+
+The inner volumes can be modeled with the material value (a numeric value less or equal to zero). It’s recommended that the material value be less than zero instead of zero, Then, with the method **show_void_inner_volumes** we can change the sign of the materials with negative values to positive (solid material) before export it.
+
+```python
+g.show_void_inner_volumes(show=True)
+```
+
+#### - Describe a material system using quadric surfaces
 
 The methods for describe a material system using quadric surfaces, bodies and modules and make others operations are detailed in the next sections.
 
@@ -131,7 +144,7 @@ Method and arguments:
 
 ```python
 surface(label=None, indices=(1,1,1,1,1), scale=(1,1,1), 
-        rotation=(0,0,0), translation=(0,0,0), angle="DEG", starred=False, comment="", **kwargs)
+        rotation=(0,0,0), translation=(0,0,0), starred=False, comment="", **kwargs)
 ```
 
 * label (string): user label of the element (maximum 4 characters). This parameter is optional. If the user doesn’t set it, an internal state machine assigns an unique 4-character value in the range XAAA to ZZZZ. An element without explicit label can be reference only through its instance
@@ -139,7 +152,6 @@ surface(label=None, indices=(1,1,1,1,1), scale=(1,1,1),
 * scale (tuple): scale factors for the X, Y and Z axes (X-SCALE, Y-SCALE, Z-SCALE) 
 * rotation (tuple): rotation values defined through the Euler angles (OMEGA, THETA, PHI)
 * translation (tuple): translation values for the X, Y and Z axes (X-SHIFT, Y-SHIFT, Z-SHIFT) 
-* angle (string): unit of measure for angles (rotation). This parameter can be "rad", "RAD" (radian) or "deg", "DEG" (degree, by default)
 * starred (boolean): if True its allow to define fixed surfaces, which will not be affected by possible translations or rotations in subsequent stages of the geometry definition
 * comment (string): short text description
 * **return value:** instance of the current Surface object 
@@ -217,7 +229,7 @@ Method and arguments:
 
 ```python
 module(label=None, material=0, surfaces=[], bodies=[], modules=[], 
-       rotation=(0,0,0), translation=(0,0,0), angle="DEG", comment="", **kwargs)
+       rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs)
 ```
 * label (string): user label of the element (maximum 4 characters). This parameter is optional. If the user doesn’t set it, an internal state machine assigns an unique 4-character value in the range XAAA to ZZZZ. An element without explicit label can be reference only through its instance
 * material (string or integer): number of the material identification conform with the convention adopted in the simulation
@@ -226,7 +238,6 @@ module(label=None, material=0, surfaces=[], bodies=[], modules=[],
 * modules (list of string or module objects): boundary modules of the current module
 * rotation (tuple): rotation values defined through the Euler angles (OMEGA, THETA, PHI)
 * translation (tuple): translation values for the X, Y and Z axes (X-SHIFT, Y-SHIFT, Z-SHIFT) 
-* angle (string): unit of measure for angles (rotation). This parameter can be "rad", "RAD" (radian) or "deg", "DEG" (degree, by default)
 * comment (string): short text description
 * **return value:** instance of the current Module object 
 
@@ -252,13 +263,12 @@ Z-SHIFT=(         E22.15       ,  I4) (DEFAULT=0.0)
 Method and arguments:
 
 ```python
-clone(label=None, module="", rotation=(0,0,0), translation=(0,0,0), angle="DEG", comment="", **kwargs)
+clone(label=None, module="", rotation=(0,0,0), translation=(0,0,0), comment="", **kwargs)
 ```
 * label (string): user label of the element (maximum 4 characters). This parameter is optional. If the user doesn’t set it, an internal state machine assigns an unique 4-character value in the range XAAA to ZZZZ. An element without explicit label can be reference only through its instance
 * module (string or module object): label or instance of the module to be cloned
 * rotation (tuple): rotation values defined through the Euler angles (OMEGA, THETA, PHI)
 * translation (tuple): translation values for the X, Y and Z axes (X-SHIFT, Y-SHIFT, Z-SHIFT) 
-* angle (string): unit of measure for angles (rotation). This parameter can be "rad", "RAD" (radian) or "deg", "DEG" (degree, by default)
 * comment (string): short text description
 * **return value:** instance of the current Clone object 
 
