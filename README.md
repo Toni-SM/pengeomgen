@@ -27,11 +27,11 @@ import pengeomgen
 
 g=pengeomgen.GeometryDefinition("The pythonic champagne glass")
     
-g.surface_plane("S1", zscale=9)
-g.surface_plane("S2", zscale=7)
-g.surface("S4", indices=( 0, 0, 0, 1, 0), zshift=-6)
-g.surface("S5", indices=( 0, 0, 0, 1, 0), zshift=-6.4)
-g.surface("S6", indices=( 0, 0, 0, 1, 0), zshift=-6.8)
+s1=g.surface(indices=( 0, 0, 0, 1, -1), zscale=9)
+s2=g.surface(indices=( 0, 0, 0, 1, -1), zscale=7)
+s4=g.surface_plane(zshift=-6)
+s5=g.surface_plane(zshift=-6.4)
+s6=g.surface_plane(zshift=-6.8)
 
 g.surface_paraboloid("S7")
 g.surface_paraboloid("S8", scale=(0.98, 0.98, 1), translation=(0, 0, 0.35))
@@ -40,11 +40,11 @@ g.surface_cone("S9", scale=(0.012, 0.012, 1), translation=(0, 0, -20))
 g.surface_cone("S10", scale=(3.7, 3.7, 1), translation=(0, 0, -6))
 g.surface_cone("S11", scale=(5.1, 5.1, 1), translation=(0, 0, -6.35))
 
-g.body("B1", 2, surfaces=[("S1",-1), ("S7",-1), ("S8", 1)], comment="cup body")
-g.body("B2", 1, surfaces=[("S8",-1), ("S2",-1)], comment="liquid")
-g.body("B3", 2, surfaces=[("S5", 1), ("S9",-1), ("S7", 1)], comment="trunk")
-g.body("B4", 0, surfaces=[("S5",-1), ("S6", 1), ("S11",-1)], comment="foot hole")
-g.body("B5", 2, surfaces=[("S4",-1), ("S6", 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
+g.body("B1", 2, surfaces=[(s1,-1), ("S7",-1), ("S8", 1)], comment="cup body")
+g.body("B2", 1, surfaces=[("S8",-1), (s2,-1)], comment="liquid")
+g.body("B3", 2, surfaces=[(s5, 1), ("S9",-1), ("S7", 1)], comment="trunk")
+g.body("B4", 0, surfaces=[(s5,-1), (s6, 1), ("S11",-1)], comment="foot hole")
+g.body("B5", 2, surfaces=[(s4,-1), (s6, 1), ("S10",-1)], bodies=["B3", "B4"], comment="foot body")
 
 print(g)
 
