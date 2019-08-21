@@ -91,7 +91,7 @@ class Surface(base.Element):
             if self.AZ:
                 s+="\n     AZ=({0},   0)".format(format(self.AZ, "+22.15E"))
             if self.A0:
-                s+="\n     A0=({0},   0)".format(format(self.A0, "+22.15E"))
+                s+="\n     A0=({0},   0)".format(format(self.A0*self.unit_multiplication_factor, "+22.15E"))
             # rotation and translation
             if self.rotation!=[0,0,0] or self.translation!=[0,0,0]:
                 s+="\n1111111111111111111111111111111111111111111111111111111111111111"

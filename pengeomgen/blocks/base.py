@@ -70,13 +70,13 @@ class Element(Base):
         s=""
         # scale x
         if self.scale[0]!=1:
-            s+="\nX-SCALE=({0},   0)".format(format(self.scale[0], "+22.15E"))
+            s+="\nX-SCALE=({0},   0)".format(format(self.scale[0]*self.unit_multiplication_factor, "+22.15E"))
         # scale y
         if self.scale[1]!=1:
-            s+="\nY-SCALE=({0},   0)".format(format(self.scale[1], "+22.15E"))
+            s+="\nY-SCALE=({0},   0)".format(format(self.scale[1]*self.unit_multiplication_factor, "+22.15E"))
         # scale z
         if self.scale[2]!=1:
-            s+="\nZ-SCALE=({0},   0)".format(format(self.scale[2], "+22.15E"))
+            s+="\nZ-SCALE=({0},   0)".format(format(self.scale[2]*self.unit_multiplication_factor, "+22.15E"))
         return s       
         
     def representation_rotation(self):
