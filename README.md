@@ -62,13 +62,14 @@ import pengeomgen
 g = pengeomgen.GeometryDefinition(description="", unit="cm", angle="DEG")
 ```
 * description (string): informative text
-* unit (string): unit of measurement for length (translation). This parameter allows us to define the material system in the units of the schematics, as example. The current unit (see the table below) is converted to centimeter when the geometry definition file is exported
+* unit (string): unit of measurement for length (scale and translation). This parameter allows us to define the material system in the units of the schematics, as example. The current unit (see the table below) is converted to centimeter when the geometry definition file is exported
 * angle (string): unit of measure for angles (rotation). This parameter can be "rad", "RAD" (radian) or "deg", "DEG" (degree)
 
 > The unit and angle parameters can be overwrite in the methods described below for construct quadric surfaces, modules and clones
  
 Argument (string)           | Unit of measurement 
 --------------------------- | --------------------- 
+um, micrometer, micrometers | micrometer
 mm, millimeter, millimeters | millimeter
 cm, centimeter, centimeters | centimeter (default)
 dm, decimeter, decimeters   | decimeter

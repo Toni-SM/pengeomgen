@@ -53,7 +53,9 @@ class Element(Base):
         pass
 
     def compute_unit_multiplication_factor(self):
-        if self.unit.lower() in ["mm", "millimeter", "millimeters"]:
+        if self.unit.lower() in ["um", "micrometer", "micrometers"]:
+            self.unit_multiplication_factor=0.0001
+        elif self.unit.lower() in ["mm", "millimeter", "millimeters"]:
             self.unit_multiplication_factor=0.1
         elif self.unit.lower() in ["cm", "centimeter", "centimeters"]:
             self.unit_multiplication_factor=1
