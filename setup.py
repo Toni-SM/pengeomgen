@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="pengeomgen",
-    version="0.0.2",
+    version="0.0.3",
     author="Antonio Serrano",
     author_email="toni.sm91@gmail.com",
     description="An easy geometry-definition file generator for PENELOPE PENGEOM",
