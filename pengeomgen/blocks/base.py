@@ -21,6 +21,7 @@ class Element(Base):
         
         # length unit
         self.unit_multiplication_factor=1
+        self.modify_scale=kwargs.get("modify_scale", True)
         self.unit=kwargs.get("unit", "cm").lower()
         self.compute_unit_multiplication_factor()
         
@@ -70,15 +71,18 @@ class Element(Base):
         
     def representation_scale(self):
         s=""
+        multiplication_factor=1
+        if self.modify_scale:
+            multiplication_factor=self.unit_multiplication_factor
         # scale x
         if self.scale[0]!=1:
-            s+="\nX-SCALE=({0},   0)".format(format(self.scale[0]*self.unit_multiplication_factor, "+22.15E"))
+            s+="\nX-SCALE=({0},   0)".format(format(self.scale[0]*multiplication_factor, "+22.15E"))
         # scale y
         if self.scale[1]!=1:
-            s+="\nY-SCALE=({0},   0)".format(format(self.scale[1]*self.unit_multiplication_factor, "+22.15E"))
+            s+="\nY-SCALE=({0},   0)".format(format(self.scale[1]*multiplication_factor, "+22.15E"))
         # scale z
         if self.scale[2]!=1:
-            s+="\nZ-SCALE=({0},   0)".format(format(self.scale[2]*self.unit_multiplication_factor, "+22.15E"))
+            s+="\nZ-SCALE=({0},   0)".format(format(self.scale[2]*multiplication_factor, "+22.15E"))
         return s       
         
     def representation_rotation(self):
